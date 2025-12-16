@@ -2265,7 +2265,10 @@ async function elegirMasCartones() {
 
 // ==================== FUNCIONES DEL PANEL ADMIN ====================
 async function cargarPanelAdmin() {
-   restaurarSesionDesdeLocalStorage();
+    if (typeof window.restaurarSesionDesdeLocalStorage === 'function') {
+    console.log('🔧 Ejecutando restauración...');
+    window.restaurarSesionDesdeLocalStorage();
+  }
   await obtenerMontoTotalRecaudado();
   await contarCartonesVendidos();
   await cargarModoCartonesAdmin();
@@ -3417,6 +3420,7 @@ iniciarDetectorActividad();
 // ==================== FUNCIÓN entrarAdmin ====================
 async function entrarAdmin() {
   // Verificar si ya tiene sesión válida
+  restaurarSesionDesdeLocalStorage();
   const sessionToken = sessionStorage.getItem('admin_session_token');
   
   if (sessionToken && await verificarSesionAdmin()) {
