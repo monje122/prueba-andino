@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BingoAndino75 - Juegos en línea y diversión</title>
+   <!-- ✅ Metaetiquetas SEO -->
+  <meta name="description" content="Disfruta de los mejores juegos de bingo en línea. Juega, gana y diviértete con BINGO ANDINO 75." />
+  <meta name="keywords" content="bingo, juegos, en línea, ganar dinero, entretenimiento, bingoandino75, venezuela" />
+  <meta name="author" content="Bingoandino75" />
+
+  <!-- ✅ Open Graph (para redes sociales) -->
+  <meta property="og:title" content="Bingoandino75" />
+  <meta property="og:description" content="Juegos de bingo en línea con premios y diversión asegurada." />
+  <meta property="og:url" content="https://bingoandino75.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://i.postimg.cc/wj0b7wG6/bingo-andino75.png" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ventana de bienvenida -->
+  <section id="bienvenida">
+    <footer>
+  Página creada por 
+  <a href="https://instagram.com/emprende.vene" target="_blank" rel="noopener noreferrer" style="color: #16bedb; text-decoration: none; font-weight: bold;">
+    @emprende.vene
+  </a>
+</footer>
+
+  <img src="https://i.postimg.cc/RC8kzpKt/Chat-GPT-Image-7-jun-2025-19-52-12.png" alt="Logo" class="logo">
+    
+    <div id="hora-venezuela" style="margin-top: 15px; font-weight: bold; font-size: 16px;"></div>
+ <!-- Redes sociales - visible solo en la pantalla de inicio -->
+<div id="redes-sociales">
+  <a href="https://wa.me/584120632708" target="_blank" rel="noopener noreferrer" title="WhatsApp">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" width="40" />
+  </a>
+  <a href="https://www.youtube.com/@bingoandino75" target="_blank" rel="noopener noreferrer" title="YouTube">
+    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" width="40" />
+  </a>
+  <a href="https://www.facebook.com/profile.php?id=61576936027458" target="_blank" rel="noopener noreferrer" title="Facebook">
+  <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="40" height="40" />
+</a>
+  <a href="https://www.instagram.com/bingoandino75?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" title="Instagram">
+    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram" width="40" />
+  </a>
+  
+  <a id="btnWhatsapp" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
+  Unirse al grupo de WhatsApp
+</a>
+
+</div>
+    <button onclick="mostrarVentana('inscripcion')">Comprar</button>
+    <button onclick="mostrarVentana('usuario')">Usuario</button>
+    <button onclick="mostrarVentana('lista-aprobados')">📋 Lista de Aprobados</button>
+    <button onclick="window.open('envivo.html', '_blank')">🔴 Ver En Vivo</button>
+    <button onclick="mostrarSeccion('ganadores')">Historial de ganadores</button>
+     <button id="boton-admin-oculto" style="display: none;" onclick="mostrarVentana('admin')">Admin</button>
+  </section>
+
+<section id="ganadores" class="oculto">
+  <h2>🎉 Lista de ganadores</h2>
+  <div id="listaGanadores"></div>
+  <button onclick="mostrarSeccion('bienvenida')">inicio</button>
+</section>
+
+  <!-- Ventana de inscripción -->
+  <section id="inscripcion" class="oculto">
+    <h2>Inscripción</h2>
+    <input type="text" placeholder="Nombre" id="nombre">
+    <input type="tel" placeholder="Teléfono" id="telefono">
+    <input type="text" placeholder="Cédula" id="cedula">
+    <input type="text" placeholder="¿Quién te refirió?" id="referido">
+   <button onclick="guardarDatosInscripcion()">Continuar</button>
+
+    <button onclick="mostrarVentana('bienvenida')">Inicio</button>
+  </section>
+<!-- Ventana de cantidad de cartones ------------------------------------>
+<section id="cantidad" class="oculto">
+  <h2>¿Cuántos cartones quieres comprar?</h2>
+
+  <div class="selector-cantidad">
+    <button id="btnMenos" type="button">−</button>
+
+    <!-- permite teclear o usar los botones -->
+    <input type="number"
+           id="cantidadCartones"
+           value="1"
+           min="1"
+           step="1" />
+
+    <button id="btnMas" type="button">+</button>
+  </div>
+
+  <p>Total a pagar: <strong><span id="monto-preseleccion">0</span> Bs</strong></p>
+
+  <div id="promoBox" class="oculto" style="margin: 20px 0;">
+    <h3 style="color: #FFA500; margin-bottom: 15px;">🎯 Promociones Disponibles</h3>
+    <div class="grid-promociones">
+      <button class="btn-promo" data-promo="1" onclick="seleccionarPromocion(1)">
+        <span class="promo-desc" id="promo-desc-1">Promo 1</span>
+        <span class="promo-precio" id="promo-precio-1">0 Bs</span>
+      </button>
+      
+      <button class="btn-promo" data-promo="2" onclick="seleccionarPromocion(2)">
+        <span class="promo-desc" id="promo-desc-2">Promo 2</span>
+        <span class="promo-precio" id="promo-precio-2">0 Bs</span>
+      </button>
+      
+      <button class="btn-promo" data-promo="3" onclick="seleccionarPromocion(3)">
+        <span class="promo-desc" id="promo-desc-3">Promo 3</span>
+        <span class="promo-precio" id="promo-precio-3">0 Bs</span>
+      </button>
+      
+      <button class="btn-promo" data-promo="4" onclick="seleccionarPromocion(4)">
+        <span class="promo-desc" id="promo-desc-4">Promo 4</span>
+        <span class="promo-precio" id="promo-precio-4">0 Bs</span>
+      </button>
+    </div>
+    <small style="display: block; margin-top: 10px; color: #666;">
+      💡 Selecciona una promoción o elige la cantidad manualmente
+    </small>
+  </div>
+
+  
+  <button type="button" onclick="confirmarCantidad()">Continuar</button>
+  <button type="button" onclick="mostrarVentana('bienvenida')">Inicio</button>
+</section>
+
+  <!-- Selección de cartones -->
+  <section id="cartones" class="oculto">
+    <h2>Selecciona tus cartones</h2>
+    <div id="contadorCartones" class="text-center font-bold text-lg my-2">
+  Cartones disponibles: 50 de 50
+</div>
+    <div id="contenedor-cartones"></div>
+    <p id="totalPagarCartones">Total a pagar: <span id="monto-total">0</span> Bs</p>
+
+     <button id="btnContinuarCartones" onclick="mostrarVentana('pago')">Continuar</button>
+
+    <button onclick="mostrarVentana('bienvenida')">Inicio</button>
+  </section>
+
+  <!-- Ventana de pago -->
+  <section id="pago" class="oculto">
+    <h2>Pago Móvil</h2>
+    <p>Banco: Mercantil(0105)</p>
+    <p>Teléfono:0414-3742385</p>
+    <p>Cédula: 19353708</p>
+    <p>Monto a pagar: <span id="monto-pago"></span> Bs</p>
+    <input type="file" accept="image/*" id="comprobante">
+    <input type="text" 
+       id="referencia4dig"
+       maxlength="4"
+       placeholder="Últimos 4 dígitos de la referencia"
+       style="margin-top: 10px;" />
+
+   <button id="btnEnviarComprobante" onclick="enviarComprobante()">Enviar comprobante</button>
+
+
+    <button onclick="mostrarVentana('bienvenida')">Inicio</button>
+  </section>
+
+  <!-- Ventana usuario -->
+  <section id="usuario" class="oculto">
+    <h2>Consultar cartones</h2>
+    <input type="text" placeholder="Ingresa tu cédula" id="consulta-cedula">
+    <button onclick="consultarCartones()">Consultar</button>
+    <div id="cartones-usuario"></div>
+    <button id="btnElegirMas" onclick="elegirMasCartones()">Elegir más cartones</button>
+<button onclick="mostrarVentana('bienvenida')">Inicio</button>
+  </section>
+ 
+
+<!-- Panel admin -->
+<section id="admin-login" class="oculto">
+  <h2>🔐 Inicio de Sesión Administrador</h2>
+  
+  <!-- Campos de login -->
+  <div id="login-fields">
+ <input type="email" id="admin-email" placeholder="Correo electrónico">
+    <input type="password" id="admin-password" placeholder="Contraseña">
+    <button onclick="loginAdmin()">Iniciar Sesión</button>
+    <button onclick="mostrarVentana('bienvenida')">Inicio</button>
+  </div>
+  
+  <!-- Contenedor OTP (inicialmente oculto) -->
+  <div id="otp-container" style="display: none; margin-top: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+    <h3>📧 Verificación en 2 Pasos</h3>
+    <p>Se envió un código a: <strong><span id="otp-email-display"></span></strong></p>
+    
+    <div style="margin: 15px 0;">
+      <label for="otp-code">Código de 6 dígitos:</label><br>
+      <input type="text" 
+             id="otp-code" 
+             maxlength="6" 
+             placeholder="123456" 
+             style="letter-spacing: 10px; text-align: center; font-size: 24px; width: 200px; padding: 10px; margin: 10px 0;"
+             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6)">
+    </div>
+    
+    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+      <button onclick="verificarOTP()" class="btn-primary" style="padding: 12px 24px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        ✅ Verificar Código
+      </button>
+      <button onclick="reenviarOTP()" class="btn-secondary" style="padding: 12px 24px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 5px; cursor: pointer;">
+        🔄 Reenviar código
+      </button>
+      <button onclick="cancelarOTP()" class="btn-secondary" style="padding: 12px 24px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 5px; cursor: pointer;">
+        ↩️ Cancelar
+      </button>
+    </div>
+    
+    <p style="margin-top: 15px; font-size: 12px; color: #666;">
+      ⏰ El código expira en 10 minutos
+    </p>
+  </div>
+  
+  <!-- Mensajes de error/éxito -->
+  <div id="admin-error" style="margin-top: 15px; padding: 10px; border-radius: 5px;"></div>
+  
+  </div>
+</section>
+
+<!-- Panel admin (sólo visible después de login) -->
+<section id="admin-panel" class="oculto">
+  <h2>👑 Panel de Administración</h2>
+  <div style="margin-bottom: 20px; color: #666;">
+    Conectado como: <span id="admin-email-display"></span>
+ <button id="logoutBtn" class="btn-logout">
+        🔓 Cerrar Sesión
+      </button>
+  </div>
+    </div>
+  <button id="cerrarVentasBtn" class="btn-admin">Cerrar Ventas</button>
+  <button id="abrirVentasBtn">Abrir Ventas</button>
+  <button onclick="reiniciarTodo()">Reiniciar Todo</button>
+  <button onclick="activarCohetes()">Lanzar cohetes</button>
+</div>
+    <div>
+  <label for="precioCarton">Precio por cartón:</label>
+  <input type="number" id="precioCarton" min="0" step="0.01" />
+  <button id="guardarPrecioBtn">Guardar precio</button>
+</div>
+    <p>Total de cartones vendidos: <span id="total-vendidos">0</span></p>
+    <p>Total clientes inscritos: <span id="contador-clientes"></span></p>
+<p>Total recaudado: <strong id="totalMonto">$0.00</strong></p>
+
+
+    <h3>Inscripciones pendientes</h3>
+<button onclick="ordenarInscripcionesPorNombre()">🔤 Ordenar alfabéticamente</button>
+<button onclick="ordenarPorCedula()">🔢 Ordenar por cédula</button>
+<button onclick="ordenarPorReferencia()">🔢 Ordenar por referencia</button>
+
+    <table id="tabla-comprobantes">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Cédula</th>
+           <th>Referido</th>
+          <th># Cartones</th>
+          <th>Referencia</th>
+          <th>Comprobante</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+<button id="verListaBtn">Ver lista</button>
+    <button id="imprimirListaBtn">Imprimir Lista</button>
+    <div style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
+  <button id="btnDupNombreAprobados">🔍 Duplicados por Nombre (Aprobados)</button>
+  <button id="btnDupReferenciaAprobados">🔍 Duplicados por Referencia (Aprobados)</button>
+</div>
+<div id="duplicadosAprobadosResultado" style="margin-top:10px;"></div>
+
+    <h3>lista de aprobados</h3>
+<div id="listaAprobados"></div>
+
+    <div style="margin: 16px 0;">
+  <button id="btnVerHuerfanos">🔎 Ver cartones huérfanos</button>
+  <button id="btnLiberarHuerfanos">🧹 Liberar huérfanos</button>
+</div>
+<div id="huerfanosResultado" style="margin-top:10px;"></div>
+
+    <button id="btnDuplicados">🔍 Detectar cartones duplicados</button>
+<div id="duplicadosResultado" style="margin-top:10px;"></div>
+
+   <!-- Configuración de 4 Promociones -->
+<h3>🎯 Configuración de 4 Promociones</h3>
+
+<div class="grid-promociones-admin">
+  <!-- Promo 1 -->
+  <div class="promo-admin-card">
+    <h4>Promoción 1</h4>
+    <div class="promo-control">
+      <input type="checkbox" id="promo1_activa" class="promo-activa">
+      <label for="promo1_activa">Activar</label>
+    </div>
+    <input type="text" id="promo1_descripcion" placeholder="Descripción (ej: Pack Familiar 5x4)" class="promo-input">
+    <input type="number" id="promo1_cantidad" placeholder="Cantidad cartones" min="1" class="promo-input">
+    <input type="number" id="promo1_precio" placeholder="Precio total Bs" min="0" step="0.01" class="promo-input">
+  </div>
+
+  <!-- Promo 2 -->
+  <div class="promo-admin-card">
+    <h4>Promoción 2</h4>
+    <div class="promo-control">
+      <input type="checkbox" id="promo2_activa" class="promo-activa">
+      <label for="promo2_activa">Activar</label>
+    </div>
+    <input type="text" id="promo2_descripcion" placeholder="Descripción" class="promo-input">
+    <input type="number" id="promo2_cantidad" placeholder="Cantidad cartones" min="1" class="promo-input">
+    <input type="number" id="promo2_precio" placeholder="Precio total Bs" min="0" step="0.01" class="promo-input">
+  </div>
+
+  <!-- Promo 3 -->
+  <div class="promo-admin-card">
+    <h4>Promoción 3</h4>
+    <div class="promo-control">
+      <input type="checkbox" id="promo3_activa" class="promo-activa">
+      <label for="promo3_activa">Activar</label>
+    </div>
+    <input type="text" id="promo3_descripcion" placeholder="Descripción" class="promo-input">
+    <input type="number" id="promo3_cantidad" placeholder="Cantidad cartones" min="1" class="promo-input">
+    <input type="number" id="promo3_precio" placeholder="Precio total Bs" min="0" step="0.01" class="promo-input">
+  </div>
+
+  <!-- Promo 4 -->
+  <div class="promo-admin-card">
+    <h4>Promoción 4</h4>
+    <div class="promo-control">
+      <input type="checkbox" id="promo4_activa" class="promo-activa">
+      <label for="promo4_activa">Activar</label>
+    </div>
+    <input type="text" id="promo4_descripcion" placeholder="Descripción" class="promo-input">
+    <input type="number" id="promo4_cantidad" placeholder="Cantidad cartones" min="1" class="promo-input">
+    <input type="number" id="promo4_precio" placeholder="Precio total Bs" min="0" step="0.01" class="promo-input">
+  </div>
+</div>
+
+<button id="guardarPromocionesBtn" style="background: #00b894; color: white; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px;">
+  💾 Guardar Todas las Promociones
+</button>
+
+<p id="estadoPromociones" style="margin-top: 10px; font-weight: bold;"></p>
+
+    
+<h4>Subir imágenes de cartones</h4>
+<input type="file" id="cartonImageInput" multiple accept="image/*">
+<button onclick="subirCartones()">Subir imágenes</button>
+<div id="uploadStatus"></div>
+<button onclick="borrarCartones()" style="background-color: red; color: white; padding: 10px; border: none; border-radius: 5px;">
+  Borrar todas las imágenes de cartones
+</button>
+<div id="deleteStatus"></div>
+<label for="inputWhatsapp">Enlace WhatsApp:</label>
+<input type="text" id="inputWhatsapp" placeholder="https://chat.whatsapp.com/xxxx">
+<button onclick="guardarLinkWhatsapp()">Guardar enlace</button>
+
+<h3>Cambiar cantidad total de cartones</h3>
+<input type="number" id="nuevoTotalCartones" placeholder="Ej: 300">
+<button onclick="guardarNuevoTotal()">Guardar nuevos cartones</button>
+<p id="estadoTotalCartones"></p>
+
+<h3>Modo de selección de cartones</h3>
+<select id="modoCartonesSelect">
+  <option value="fijo">Fijo</option>
+  <option value="libre">Libre</option>
+</select>
+
+<div id="contenedorCartonesFijos">
+  <label>Cantidad obligatoria:</label>
+  <input type="number" id="cantidadCartonesFijos" min="1" step="1">
+</div>
+
+<button id="guardarModoCartonesBtn">Guardar configuración</button>
+    
+    
+<label for="inputYoutube">Enlace del En Vivo (YouTube):</label>
+<input type="text" id="inputYoutube" placeholder="https://www.youtube.com/watch?v=xxxxx">
+<button onclick="guardarLinkYoutube()">Guardar enlace</button>
+
+<button onclick="toggleFormularioGanador()">Registrar nuevo ganador</button>
+
+<div id="formularioGanadorContenedor" style="display: none;">
+  <form id="formularioGanador">
+    <input type="text" id="ganadorNombre" placeholder="Nombre del ganador" required><br>
+    <input type="text" id="ganadorCedula" placeholder="Cédula" required><br>
+    <input type="text" id="ganadorCartones" placeholder="Cartones ganadores (ej: 15, 23)" required><br>
+    <input type="text" id="ganadorPremio" placeholder="Premio ganado" required><br>
+    <input type="text" id="ganadorTelefono" placeholder="Telefono" required><br>
+    <input type="date" id="ganadorFecha" required><br>
+    <button type="button" onclick="guardarGanador()">Guardar Ganador</button>
+  </form>
+</div>
+
+
+    
+  <button onclick="mostrarVentana('bienvenida')">Inicio</button>
+</section>
+ <!-- Ventana aprobados -->
+
+
+<section id="lista-aprobados" class="oculto">
+  <h2>Lista de Aprobados</h2>
+  <div id="contenedor-aprobados"></div>
+  <button onclick="mostrarVentana('bienvenida')">Inicio</button>
+</section>
+
+<!-- Modal de vista previa del cartón -->
+<div id="modal-carton" class="modal oculto">
+  <div class="modal-contenido">
+    <img id="imagen-carton-modal" src="" alt="Cartón" style="width: 100%; max-width: 300px;">
+    <div style="margin-top: 10px;">
+      <button id="btnSeleccionarCarton">Seleccionar</button>
+      <button onclick="cerrarModalCarton()">Cerrar</button>
+    </div>
+  </div>
+</div>
+ 
+  
+  <div id="modal-terminos" class="modal oculto">
+  <div class="modal-contenido">
+    <h2>Importante antes de jugar</h2>
+    <p style="max-height: 300px; overflow-y: auto; text-align: left; font-size: 14px; line-height: 1.5;">
+      Al momento de seleccionar sus números el jugador debe verificar Fechas, Premios y Hora de juego para estar al tanto de toda la información.<br><br>
+      Una vez el sistema registre la compra, no se realizan devoluciones.<br><br>
+      Luego de realizar su compra debe esperar unos minutos a que sea verificada.<br><br>
+      Puede verificar su jugada haciendo click en "Usuario" (si no aparecen los números, la jugada aún no ha sido verificada).<br><br>
+      <strong>Al finalizar la compra, únase al grupo de juego DE INMEDIATO.</strong>
+    </p>
+    <button onclick="cerrarTerminos()">Aceptar</button>
+  </div>
+</div>
+
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+
+ <footer style="text-align: center; padding: 20px; font-size: 13px; color: white; background-color: rgba(0,0,0,0.0);">
+  © 2025 Bingo Andino 75. Todos los derechos reservados. <br>
+  <a href="privacidad.html" style="color: #f9d949; text-decoration: underline;">Política de Privacidad</a>
+
+  <br><br>
+
+  <a href="index.html">
+  </a>
+</footer>
+</body>
+</html>
