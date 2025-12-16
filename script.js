@@ -393,6 +393,7 @@ async function forzarCerrarSesionRemota() {
 // ==================== LOGIN CON DOBLE FACTOR ====================
 // ==================== LOGIN SEGURO CON EDGE FUNCTION ====================
 async function loginAdmin() {
+  restaurarSesionDesdeLocalStorage();
   const email = document.getElementById('admin-email').value.trim();
   const password = document.getElementById('admin-password').value;
   const errorDiv = document.getElementById('admin-error');
@@ -521,7 +522,27 @@ async function loginAdmin() {
     document.getElementById('admin-password').value = '';
   }
 }
-
+// ========== RESTAURAR SESIÓN DESDE localStorage ==========
+function restaurarSesionDesdeLocalStorage() {
+  const email = localStorage.getItem('admin_email');
+  const token = localStorage.getItem('admin_session_token');
+  
+  if (email && token) {
+    // 1. Sincronizar a sessionStorage
+    sessionStorage.setItem('admin_email', email);
+    sessionStorage.setItem('admin_session_token', token);
+    
+    // 2. Restaurar variables globales (¡ESTO ES LO QUE FALTA!)
+    sesionActiva = true;
+    adminSession = { email: email, token: token };
+    
+    console.log('✅ Sesión restaurada para:', email);
+    return true;
+  }
+  
+  console.log('ℹ️ No hay sesión para restaurar');
+  return false;
+}
 // ==================== FUNCIONES OTP ====================
 
 function mostrarInterfazOTP(email) {
