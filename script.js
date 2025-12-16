@@ -2447,7 +2447,7 @@ async function cerrarVentas() {
 
   const { error } = await supabase
     .from('configuracion')
-    .update({ valore: 'false' })
+    .update({ valor: 'false' })
     .eq('clave', 'ventas_abierta');
 
   if (error) {
@@ -2467,7 +2467,7 @@ async function abrirVentas() {
 
   const { error } = await supabase
     .from('configuracion')
-    .update({ valore: 'true' })
+    .update({ valor: 'true' })
     .eq('clave', 'ventas_abierta');
 
   if (error) {
