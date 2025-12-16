@@ -522,27 +522,7 @@ async function loginAdmin() {
     document.getElementById('admin-password').value = '';
   }
 }
-// ========== RESTAURAR SESIÓN DESDE localStorage ==========
-function restaurarSesionDesdeLocalStorage() {
-  const email = localStorage.getItem('admin_email');
-  const token = localStorage.getItem('admin_session_token');
-  
-  if (email && token) {
-    // 1. Sincronizar a sessionStorage
-    sessionStorage.setItem('admin_email', email);
-    sessionStorage.setItem('admin_session_token', token);
-    
-    // 2. Restaurar variables globales (¡ESTO ES LO QUE FALTA!)
-    sesionActiva = true;
-    adminSession = { email: email, token: token };
-    
-    console.log('✅ Sesión restaurada para:', email);
-    return true;
-  }
-  
-  console.log('ℹ️ No hay sesión para restaurar');
-  return false;
-}
+
 // ==================== FUNCIONES OTP ====================
 
 function mostrarInterfazOTP(email) {
@@ -1096,7 +1076,7 @@ function proceedWithSession(sessionToken, email, expiresAt) {
 // Nueva función para mostrar panel seguro
 async function mostrarPanelAdminSeguro(sessionToken) {
   console.log('🎉 Mostrando panel admin seguro');
-  
+  restaurarSesionDesdeLocalStorage();
   document.getElementById('admin-login').classList.add('oculto');
   document.getElementById('admin-panel').classList.remove('oculto');
   
@@ -2285,6 +2265,7 @@ async function elegirMasCartones() {
 
 // ==================== FUNCIONES DEL PANEL ADMIN ====================
 async function cargarPanelAdmin() {
+   restaurarSesionDesdeLocalStorage();
   await obtenerMontoTotalRecaudado();
   await contarCartonesVendidos();
   await cargarModoCartonesAdmin();
@@ -3503,7 +3484,27 @@ function agregarBotonesAdicionalesAdmin() {
     loginSection.insertAdjacentHTML('beforeend', botonesHTML);
   }
 }
-
+// ========== RESTAURAR SESIÓN DESDE localStorage ==========
+function restaurarSesionDesdeLocalStorage() {
+  const email = localStorage.getItem('admin_email');
+  const token = localStorage.getItem('admin_session_token');
+  
+  if (email && token) {
+    // 1. Sincronizar a sessionStorage
+    sessionStorage.setItem('admin_email', email);
+    sessionStorage.setItem('admin_session_token', token);
+    
+    // 2. Restaurar variables globales (¡ESTO ES LO QUE FALTA!)
+    sesionActiva = true;
+    adminSession = { email: email, token: token };
+    
+    console.log('✅ Sesión restaurada para:', email);
+    return true;
+  }
+  
+  console.log('ℹ️ No hay sesión para restaurar');
+  return false;
+}
 // ==================== EXPORTAR FUNCIONES ====================
 window.mostrarVentana = mostrarVentana;
 window.guardarDatosInscripcion = guardarDatosInscripcion;
