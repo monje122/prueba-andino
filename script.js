@@ -107,9 +107,11 @@ async function setConfigValue(clave, value) {
 // ========== FUNCIÓN LOGOUT COMPATIBLE CON TU CÓDIGO ==========
 async function logoutAdmin() {
   // TÚ usas sessionStorage, no localStorage:
-  const email = sessionStorage.getItem('admin_email');
+ const email = localStorage.getItem('admin_email') || 
+                sessionStorage.getItem('admin_email');
+  const sessionToken = localStorage.getItem('admin_session_token') || 
+                       sessionStorage.getItem('admin_session_token');
   const deviceId = localStorage.getItem('admin_device_id');
-  const sessionToken = sessionStorage.getItem('admin_session_token');
   
   console.log('🔍 Datos para logout:', { email, deviceId, sessionToken });
   
@@ -169,6 +171,29 @@ async function logoutAdmin() {
   }
 }
 
+// ELIMINA desde línea 76 hasta línea 125
+// Deja SOLO esto:
+
+// ========== CERRAR SESIÓN AUTOMÁTICA AL SALIR ==========
+window.addEventListener('beforeunload', function() {
+  if (sesionActiva) {
+    const email = localStorage.getItem('admin_email');
+    const deviceId = localStorage.getItem('admin_device_id');
+    
+    if (email && deviceId) {
+      // Petición que sobrevive al cierre de pestaña
+      navigator.sendBeacon(
+        'https://dbkixcpwirjwjvjintkr.supabase.co/functions/v1/admin-auth',
+        JSON.stringify({
+          action: 'logout',
+          email: email,
+          deviceId: deviceId
+        })
+      );
+      console.log('🔒 Sesión cerrada automáticamente al salir');
+    }
+  }
+});
 // ========== FUNCIÓN PARA LIMPIAR SESIÓN (COMPATIBLE) ==========
 function clearAdminSession() {
   console.log('🧹 Limpiando sesión...');
@@ -393,7 +418,6 @@ async function forzarCerrarSesionRemota() {
 // ==================== LOGIN CON DOBLE FACTOR ====================
 // ==================== LOGIN SEGURO CON EDGE FUNCTION ====================
 async function loginAdmin() {
-  restaurarSesionDesdeLocalStorage();
   const email = document.getElementById('admin-email').value.trim();
   const password = document.getElementById('admin-password').value;
   const errorDiv = document.getElementById('admin-error');
@@ -680,8 +704,11 @@ async function verificarOTP() {
     console.log('✅ Sesión creada:', result);
     
     // 3. GUARDAR DATOS DE SESIÓN
-    sessionStorage.setItem('admin_session_token', result.sessionToken);
-    sessionStorage.setItem('admin_email', result.email);
+    localStorage.setItem('admin_session_token', result.sessionToken);
+localStorage.setItem('admin_email', result.email);
+localStorage.setItem('session_expires', result.expiresAt);
+sessionStorage.setItem('admin_session_token', result.sessionToken);
+sessionStorage.setItem('admin_email', result.email);
     sessionStorage.setItem('session_expires', result.expiresAt);
     sessionStorage.setItem('device_id', result.deviceId);
     
@@ -1076,7 +1103,7 @@ function proceedWithSession(sessionToken, email, expiresAt) {
 // Nueva función para mostrar panel seguro
 async function mostrarPanelAdminSeguro(sessionToken) {
   console.log('🎉 Mostrando panel admin seguro');
-  restaurarSesionDesdeLocalStorage();
+  
   document.getElementById('admin-login').classList.add('oculto');
   document.getElementById('admin-panel').classList.remove('oculto');
   
@@ -1106,6 +1133,7 @@ async function mostrarPanelAdminSeguro(sessionToken) {
 
   // Cargar datos del panel
   await cargarPanelAdmin();
+  configurarCierreAutomatico();
 }
 // Función para verificar OTP
 
@@ -1392,7 +1420,10 @@ function limpiarStorageTemporal() {
 async function verificarSesionInicial() {
   console.log('🔍 Verificando sesión inicial al cargar...');
   
-  const sessionToken = sessionStorage.getItem('admin_session_token');
+const sessionToken = localStorage.getItem('admin_session_token') || 
+                     sessionStorage.getItem('admin_session_token');
+const email = localStorage.getItem('admin_email') || 
+              sessionStorage.getItem('admin_email');
   
   if (!sessionToken) {
     console.log('ℹ️ No hay token en sessionStorage');
@@ -2265,10 +2296,6 @@ async function elegirMasCartones() {
 
 // ==================== FUNCIONES DEL PANEL ADMIN ====================
 async function cargarPanelAdmin() {
-    if (typeof window.restaurarSesionDesdeLocalStorage === 'function') {
-    console.log('🔧 Ejecutando restauración...');
-    window.restaurarSesionDesdeLocalStorage();
-  }
   await obtenerMontoTotalRecaudado();
   await contarCartonesVendidos();
   await cargarModoCartonesAdmin();
@@ -3420,7 +3447,6 @@ iniciarDetectorActividad();
 // ==================== FUNCIÓN entrarAdmin ====================
 async function entrarAdmin() {
   // Verificar si ya tiene sesión válida
-  restaurarSesionDesdeLocalStorage();
   const sessionToken = sessionStorage.getItem('admin_session_token');
   
   if (sessionToken && await verificarSesionAdmin()) {
@@ -3518,24 +3544,3 @@ window.forzarCerrarSesionRemota = forzarCerrarSesionRemota;
 window.recuperarPasswordAdmin = recuperarPasswordAdmin;
 
 console.log('✅ Sistema de sesión única configurado correctamente');
-// ========== RESTAURAR SESIÓN DESDE localStorage ==========
-function restaurarSesionDesdeLocalStorage() {
-  const email = localStorage.getItem('admin_email');
-  const token = localStorage.getItem('admin_session_token');
-  
-  if (email && token) {
-    // 1. Sincronizar a sessionStorage
-    sessionStorage.setItem('admin_email', email);
-    sessionStorage.setItem('admin_session_token', token);
-    
-    // 2. Restaurar variables globales (¡ESTO ES LO QUE FALTA!)
-    sesionActiva = true;
-    adminSession = { email: email, token: token };
-    
-    console.log('✅ Sesión restaurada para:', email);
-    return true;
-  }
-  
-  console.log('ℹ️ No hay sesión para restaurar');
-  return false;
-}
