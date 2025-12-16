@@ -2440,21 +2440,24 @@ async function eliminarInscripcion(item, fila) {
   }
 }
 
+// ==================== MODIFICAR LAS FUNCIONES cerrarVentas() y abrirVentas() ====================
 async function cerrarVentas() {
   const confirmacion = confirm("¿Estás seguro que quieres cerrar las ventas?");
   if (!confirmacion) return;
 
   const { error } = await supabase
     .from('configuracion')
-    .update({ valor: false })
+    .update({ valore: 'false' })
     .eq('clave', 'ventas_abierta');
 
   if (error) {
     alert("Error al cerrar las ventas");
     console.error(error);
   } else {
-    alert("Ventas cerradas correctamente");
-    location.reload();
+    alert("✅ Ventas cerradas correctamente");
+    // NO SALIR DEL PANEL ADMIN - solo mostrar mensaje y actualizar si es necesario
+    // Opcional: recargar datos del panel
+    await cargarPanelAdmin();
   }
 }
 
@@ -2464,15 +2467,17 @@ async function abrirVentas() {
 
   const { error } = await supabase
     .from('configuracion')
-    .update({ valor: true })
+    .update({ valore: 'true' })
     .eq('clave', 'ventas_abierta');
 
   if (error) {
     alert("Error al abrir las ventas");
     console.error(error);
   } else {
-    alert("Ventas abiertas correctamente");
-    location.reload();
+    alert("✅ Ventas abiertas correctamente");
+    // NO SALIR DEL PANEL ADMIN - solo mostrar mensaje y actualizar si es necesario
+    // Opcional: recargar datos del panel
+    await cargarPanelAdmin();
   }
 }
 
