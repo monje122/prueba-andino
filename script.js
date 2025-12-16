@@ -3488,27 +3488,7 @@ function agregarBotonesAdicionalesAdmin() {
     loginSection.insertAdjacentHTML('beforeend', botonesHTML);
   }
 }
-// ========== RESTAURAR SESIÓN DESDE localStorage ==========
-function restaurarSesionDesdeLocalStorage() {
-  const email = localStorage.getItem('admin_email');
-  const token = localStorage.getItem('admin_session_token');
-  
-  if (email && token) {
-    // 1. Sincronizar a sessionStorage
-    sessionStorage.setItem('admin_email', email);
-    sessionStorage.setItem('admin_session_token', token);
-    
-    // 2. Restaurar variables globales (¡ESTO ES LO QUE FALTA!)
-    sesionActiva = true;
-    adminSession = { email: email, token: token };
-    
-    console.log('✅ Sesión restaurada para:', email);
-    return true;
-  }
-  
-  console.log('ℹ️ No hay sesión para restaurar');
-  return false;
-}
+
 // ==================== EXPORTAR FUNCIONES ====================
 window.mostrarVentana = mostrarVentana;
 window.guardarDatosInscripcion = guardarDatosInscripcion;
@@ -3538,3 +3518,24 @@ window.forzarCerrarSesionRemota = forzarCerrarSesionRemota;
 window.recuperarPasswordAdmin = recuperarPasswordAdmin;
 
 console.log('✅ Sistema de sesión única configurado correctamente');
+// ========== RESTAURAR SESIÓN DESDE localStorage ==========
+function restaurarSesionDesdeLocalStorage() {
+  const email = localStorage.getItem('admin_email');
+  const token = localStorage.getItem('admin_session_token');
+  
+  if (email && token) {
+    // 1. Sincronizar a sessionStorage
+    sessionStorage.setItem('admin_email', email);
+    sessionStorage.setItem('admin_session_token', token);
+    
+    // 2. Restaurar variables globales (¡ESTO ES LO QUE FALTA!)
+    sesionActiva = true;
+    adminSession = { email: email, token: token };
+    
+    console.log('✅ Sesión restaurada para:', email);
+    return true;
+  }
+  
+  console.log('ℹ️ No hay sesión para restaurar');
+  return false;
+}
